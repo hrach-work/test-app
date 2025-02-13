@@ -1,39 +1,50 @@
-## Base [(Free version)](https://themewagon.github.io/base/)
+# React + TypeScript + Vite
 
-![license](https://img.shields.io/badge/license-MIT-blue.svg)
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-> Free React Admin Dashboard made with Material-UI components and React.
+Currently, two official plugins are available:
 
-![base](https://github.com/user-attachments/assets/b6c35f74-31ba-445d-ac1a-93957039d767)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Demo
+## Expanding the ESLint configuration
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/themewagon/base)
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-- [Dashboard Page](https://themewagon.github.io/base/)
-- [Sign In Page](https://themewagon.github.io/base/auth/signin)
-- [Sign Up Page](https://themewagon.github.io/base/auth/signup)
-- [Reset Password](https://themewagon.github.io/base/auth/reset-password)
-- [Error 404](https://themewagon.github.io/base/error/404)
+- Configure the top-level `parserOptions` property like this:
 
-## Quick start
+```js
+export default tseslint.config({
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
 
-- [Download from Github](https://github.com/themewagon/bankdash/archive/refs/heads/main.zip) or clone the repo : `git clone https://github.com/themewagon/bankdash.git`
-- Recommended `Node.js v18.x`.
-- **Install:** `npm install`
-- **Start:** `npm run dev`
-- **Build:** `npm run build`
+- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
+- Optionally add `...tseslint.configs.stylisticTypeChecked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-## License
+```js
+// eslint.config.js
+import react from 'eslint-plugin-react'
 
-Distributed under the MIT License. See [LICENSE](https://github.com/minimal-ui-kit/minimal.free/blob/main/LICENSE.md) for more information.
-
-<a name="readme-top">
-<div align="center">
-<a align="center" href="https://github.com/themewagon/base/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=themewagon/base" /><br />
-</a></a></div>
-
-## Contact us
-
-Email: support@themewagon.com
+export default tseslint.config({
+  // Set the react version
+  settings: { react: { version: '18.3' } },
+  plugins: {
+    // Add the react plugin
+    react,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended rules
+    ...react.configs.recommended.rules,
+    ...react.configs['jsx-runtime'].rules,
+  },
+})
+```
