@@ -1,192 +1,72 @@
 import { useEffect } from 'react';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import { DataGrid, GridColDef, useGridApiRef, GridApi } from '@mui/x-data-grid';
 import DataGridFooter from './../../../../components/common/DataGridFooter';
-import ActionMenu from './../../../../components/common/ActionMenu';
-import Image from './../../../../components/base/Image';
-import { formatNumber } from './../../../../helpers/formatNumber';
-import { rows } from './../../../../data/recentOrdersData';
+// import { rows } from './../../../../data/recentOrdersData';
+import { IGuest } from './../../../../types';
 
-const actions = [
-  {
-    id: 1,
-    icon: 'mage:refresh',
-    title: 'Refresh',
-  },
-  {
-    id: 2,
-    icon: 'solar:export-linear',
-    title: 'Export',
-  },
-  {
-    id: 3,
-    icon: 'mage:share',
-    title: 'Share',
-  },
-];
 
-const columns: GridColDef<(typeof rows)[number]>[] = [
-  {
-    field: '__check__',
-    headerName: '',
-    width: 40,
-    sortable: false,
-    disableColumnMenu: true,
-  },
+
+const columns: GridColDef<(IGuest[])[number]>[] = [
   {
     field: 'id',
     headerName: 'Tracking no',
     editable: false,
     align: 'left',
-    flex: 2,
-    minWidth: 120,
+    flex: 1,
+    minWidth: 50,
   },
   {
-    field: 'product',
-    headerName: 'Product Name',
+    field: '_name',
+    headerName: 'Guest Name',
     editable: false,
     align: 'left',
     flex: 2,
-    minWidth: 220,
-    valueGetter: (params: { name: string; image: string }) => {
-      return params.name;
-    },
-    renderCell: (params) => {
-      return (
-        <Stack height={1} spacing={1.5} alignItems="center" justifyContent="flex-start">
-          <Image
-            src={params.row.product.image}
-            height={30}
-            width={30}
-            sx={{ objectFit: 'cover', borderRadius: 1.5 }}
-          />
-          <Typography variant="caption" fontWeight={600}>
-            {params.row.product.name}
-          </Typography>
-        </Stack>
-      );
-    },
+    minWidth: 200,
     sortComparator: (v1, v2) => v1.localeCompare(v2),
   },
   {
-    field: 'price',
-    headerName: 'Price',
+    field: '_from',
+    headerName: 'From',
     headerAlign: 'left',
     editable: false,
     flex: 1,
-    minWidth: 140,
-    renderCell: (params) => (
-      <Typography variant="caption">
-        {formatNumber(params.value, {
-          style: 'currency',
-          currency: 'USD',
-          maximumFractionDigits: 2,
-        })}
-      </Typography>
-    ),
+    minWidth: 80,
   },
   {
-    field: 'inStock',
-    headerName: 'In Stock',
+    field: '_confirm',
+    headerName: 'Confirmation',
     editable: false,
     align: 'left',
+    flex: 1,
+    minWidth: 50,
+  },
+  {
+    field: '_count',
+    headerName: 'Guests count',
+    editable: false,
+    headerAlign: 'left',
+    align: 'left',
+    flex: 1,
+    minWidth: 50,
+  },
+  {
+    field: 'created_at',
+    headerName: 'Posted date',
+    headerAlign: 'left',
+    align: 'left',
+    editable: false,
     flex: 2,
-    minWidth: 140,
-  },
-  {
-    field: 'totalOrder',
-    headerName: 'Total Order',
-    editable: false,
-    headerAlign: 'left',
-    align: 'left',
-    flex: 2,
-    minWidth: 140,
-    renderCell: (params) => (
-      <Stack direction="column" alignItems="flex-start" justifyContent="center" height={1}>
-        <Chip label={params.value} size="small" color="secondary" sx={{ borderRadius: 1.75 }} />
-      </Stack>
-    ),
-  },
-  {
-    field: 'pending',
-    headerName: 'Pending',
-    headerAlign: 'left',
-    align: 'left',
-    editable: false,
-    flex: 1,
-    minWidth: 140,
-    renderCell: (params) => (
-      <Stack direction="column" alignItems="flex-start" justifyContent="center" height={1}>
-        <Chip label={params.value} size="small" color="warning" sx={{ borderRadius: 1.75 }} />
-      </Stack>
-    ),
-  },
-  {
-    field: 'canceled',
-    headerName: 'Canceled',
-    headerAlign: 'left',
-    align: 'left',
-    editable: false,
-    flex: 1,
-    minWidth: 140,
-    renderCell: (params) => (
-      <Stack direction="column" alignItems="flex-start" justifyContent="center" height={1}>
-        <Chip label={params.value} size="small" color="error" sx={{ borderRadius: 1.75 }} />
-      </Stack>
-    ),
-  },
-  {
-    field: 'delevered',
-    headerName: 'Delevered',
-    headerAlign: 'left',
-    align: 'left',
-    editable: false,
-    flex: 1,
-    minWidth: 140,
-    renderCell: (params) => (
-      <Stack direction="column" alignItems="flex-start" justifyContent="center" height={1}>
-        <Chip label={params.value} size="small" color="success" sx={{ borderRadius: 1.75 }} />
-      </Stack>
-    ),
-  },
-  {
-    field: 'balance',
-    headerName: 'Balance',
-    headerAlign: 'right',
-    align: 'right',
-    editable: false,
-    flex: 1,
-    minWidth: 100,
-    renderCell: (params) => (
-      <Typography variant="caption">
-        {formatNumber(params.value, {
-          style: 'currency',
-          currency: 'USD',
-          maximumFractionDigits: 2,
-        })}
-      </Typography>
-    ),
-  },
-  {
-    field: 'action',
-    headerAlign: 'right',
-    align: 'right',
-    editable: false,
-    sortable: false,
-    flex: 1,
-    minWidth: 100,
-    renderHeader: () => <ActionMenu actions={actions} />,
-    renderCell: () => <ActionMenu actions={actions} />,
+    minWidth: 200,
+    
   },
 ];
 
 interface TaskOverviewTableProps {
   searchText: string;
+  rows: IGuest[]
 }
 
-const DataTable = ({ searchText }: TaskOverviewTableProps) => {
+const DataTable = ({ searchText, rows }: TaskOverviewTableProps) => {
   const apiRef = useGridApiRef<GridApi>();
 
   useEffect(() => {

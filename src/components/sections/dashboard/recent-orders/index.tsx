@@ -7,8 +7,9 @@ import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconifyIcon from './../../../../components/base/IconifyIcon';
 import DataTable from './DataTable';
+import { IGuest } from './../../../../types';
 
-const RecentOrders = () => {
+const RecentOrders = ({data}: {data: IGuest[]}) => {
   const [searchText, setSearchText] = useState('');
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +26,7 @@ const RecentOrders = () => {
         justifyContent="space-between"
       >
         <Typography variant="h6" color="text.secondary">
-          Recent Orders
+          Guests
         </Typography>
 
         <TextField
@@ -46,7 +47,7 @@ const RecentOrders = () => {
       </Stack>
 
       <Box mt={{ xs: 1.5, sm: 0.75 }} height={305} flex={1}>
-        <DataTable searchText={searchText} />
+        <DataTable searchText={searchText} rows={data}/>
       </Box>
     </Paper>
   );
